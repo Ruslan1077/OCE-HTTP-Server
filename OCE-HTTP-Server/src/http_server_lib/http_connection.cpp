@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "http_consts.h"
 #include "http_connection.h"
 
@@ -50,7 +51,7 @@ namespace utils
 
 //===============================================================================
 
-namespace serv
+namespace serv_helpers
 {
 
     http_connection::http_connection(tcp::socket socket)
@@ -233,4 +234,4 @@ namespace serv
         dedline_.async_wait(std::move(wait_cb));
     }
 
-} // namespace serv
+} // namespace serv_helpers

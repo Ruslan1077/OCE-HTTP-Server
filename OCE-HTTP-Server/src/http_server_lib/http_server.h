@@ -1,10 +1,14 @@
 #pragma once
 
-#include "stdafx.h"
+#include "pch.h"
 #include "http_connection.h"
 
 namespace serv
 {
+    namespace beast = boost::beast;
+    namespace http = beast::http;
+    namespace net = boost::asio;
+
 
     class http_server
     {
