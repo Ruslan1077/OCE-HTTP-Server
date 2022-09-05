@@ -10,8 +10,8 @@ namespace serv_helpers
         public std::enable_shared_from_this<http_connection>
     {
         using tcp = net::ip::tcp;
-        using request_t = http::request<http::dynamic_body>;
-        using response_t = http::response<http::dynamic_body>;
+        using request_t = http::request<http::string_body>;
+        using response_t = http::response<http::string_body>;
 
     public:
         explicit http_connection(tcp::socket socket);
@@ -22,7 +22,6 @@ namespace serv_helpers
     private:
         void read_request();
         void process_request();
-        void create_response();
         void write_response();
         void check_dedline();
 

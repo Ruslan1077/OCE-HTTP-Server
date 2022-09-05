@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "http_consts.h"
+#include "connection_handler.h"
 #include "http_connection.h"
 
 // STUFF FOR TEST
@@ -93,108 +94,35 @@ namespace serv_helpers
 
     void http_connection::process_request()
     {
-        /*
-        * REQUEST-PROCESSOR
-        * 
-        * response_.version(request_.version());
-        * response_.keep_alive();
-        * 
-        * check request_.method()
-        * if GET
-        *    response_.result(http::status::ok);
-        *    response_.set(http::field::server, "OCE-HTTP");
-        *    returns OK-status
-        *        and
-        *    create_response();
-        * 
-        * 
-        * if !GET
-        *   response_.result(http::status::bad_request);
-        *   response_.set(http::field::content_type, "text/plain");
-        * 
-        *   beast::ostream(response_.body())
-        *       << "Invalid request-method: "
-        *       << std::string(request_.method_string())
-        *       << ".\r\n";
-        * 
-        *   returns BAD-REQUEST-status (mb throw)
-        */
+        auto method = request_.method();
 
-        response_.version(request_.version());
-        response_.keep_alive();
-
-        switch (request_.method())
+        if (method != http::verb::get)
         {
-        case http::verb::get:
-            response_.result(http::status::ok);
-            response_.set(http::field::server, "OCE-HTTP");
-            create_response();
-            break;
-
-
-        default:
             response_.result(http::status::bad_request);
             response_.set(http::field::content_type, "text/plain");
 
-            beast::ostream(response_.body())
-                << "Invalid request-method: "
-                << std::string(request_.method_string())
+            std::stringstream ss;
+            ss  << "Invalid request-method: "
+                << request_.method_string()
                 << ".\r\n";
-            break;
+            response_.body().append(ss.str());
+
+            write_response();
+            return;
         }
 
+        auto target = request_.target();
+        std::string path( // need to add path for code dir
+            target.begin() + 1, // remove '/' in target
+            target.end());
+
+        std::string params = request_.body();
+        if (params.empty())
+            params = "Empty body.";
+
+        connection_handler handler(path, params);
+        response_ = handler.create_response(request_.version());
         write_response();
-    }
-
-    void http_connection::create_response()
-    {
-        /*
-        * RESPONSE-CREATOR
-        * 
-        * depending on target, creates responce
-        * mb call from REQUEST-PROCESSOR
-        */
-
-        /*
-            EXAMPLE
-
-            << func() <- returns std::string
-
-            if (request_.target() == "/count")
-            {
-                response_.set(http::field::content_type, "text/html");
-                beast::ostream(response_.body()) << utils::get_count_html();
-            }
-            else if (request_.target() == "/time")
-            {
-                response_.set(http::field::content_type, "text/html");
-                beast::ostream(response_.body()) << utils::get_time_html();
-            }
-            else
-            {
-                response_.result(http::status::not_found);
-                response_.set(http::field::content_type, "text/plain");
-                beast::ostream(response_.body()) << "File not found\r\n";
-            }
-        */
-
-
-        if (request_.target() == "/count")
-        {
-            response_.set(http::field::content_type, "text/html");
-            beast::ostream(response_.body()) << utils::get_count_html();
-        }
-        else if (request_.target() == "/time")
-        {
-            response_.set(http::field::content_type, "text/html");
-            beast::ostream(response_.body()) << utils::get_time_html();
-        }
-        else
-        {
-            response_.result(http::status::not_found);
-            response_.set(http::field::content_type, "text/plain");
-            beast::ostream(response_.body()) << "File not found\r\n";
-        }
     }
 
     void http_connection::write_response()

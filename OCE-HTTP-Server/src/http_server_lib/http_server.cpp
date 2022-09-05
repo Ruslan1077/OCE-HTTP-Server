@@ -38,7 +38,7 @@ namespace serv
                 if (!started_)
                     return;
 
-                auto connection = std::make_shared<http_connection>(
+                auto connection = std::make_shared<serv_helpers::http_connection>(
                     std::move(socket_));
 
                 connection->start();

@@ -24,7 +24,11 @@ namespace config
 
     public:
         bool load_configuration();
-        std::string get_option_by_id();
+
+        std::string get_option_by_id(int id)
+        {
+
+        }
 
     private:
         std::string config_path_;
