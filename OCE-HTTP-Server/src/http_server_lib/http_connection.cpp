@@ -55,12 +55,15 @@ namespace utils
 namespace serv_helpers
 {
 
-    http_connection::http_connection(tcp::socket socket)
+    http_connection::http_connection(
+        tcp::socket socket,
+        const std::string& script_folder)
         : socket_(std::move(socket))
         , buffer_(consts::buffer_body_size)
         , dedline_(
             socket_.get_executor(),
             std::chrono::seconds(consts::dedline_s))
+        , script_folder_(script_folder)
     {
     }
 
@@ -96,7 +99,7 @@ namespace serv_helpers
     {
         auto method = request_.method();
 
-        if (method != http::verb::get)
+        if (method != http::verb::get && method != http::verb::post)
         {
             response_.result(http::status::bad_request);
             response_.set(http::field::content_type, "text/plain");
@@ -112,9 +115,10 @@ namespace serv_helpers
         }
 
         auto target = request_.target();
-        std::string path( // need to add path for code dir
+        std::string path(
             target.begin() + 1, // remove '/' in target
             target.end());
+        path = script_folder_ + "\\" + path;
 
         std::string params = request_.body();
         if (params.empty())

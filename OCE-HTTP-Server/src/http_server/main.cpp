@@ -1,5 +1,6 @@
 #include <iostream>
 #include "http_server.h"
+#include "config.h"
 
 int main()
 {
@@ -7,14 +8,21 @@ int main()
 
     try
     {
-        const auto address = serv::net::ip::make_address("127.0.0.1");
-        auto port = static_cast<unsigned short>(std::atoi("80"));
+        config::storage cfg("config.json");
+
+        auto folder = cfg.get_option_by_id<std::string>(config::id::script_folder);
+        auto ip     = cfg.get_option_by_id<std::string>(config::id::server_ip);
+        auto port   = cfg.get_option_by_id<unsigned short>(config::id::server_port);
 
         serv::net::io_context ioc{ 1 };
 
-        serv::http_server server(ioc, address, port);
-        server.start();
+        serv::http_server server(
+            ioc,
+            serv::net::ip::make_address(ip),
+            port);
 
+        server.set_script_folder(folder);
+        server.start();
         ioc.run();
     }
     catch (const std::exception& ex)

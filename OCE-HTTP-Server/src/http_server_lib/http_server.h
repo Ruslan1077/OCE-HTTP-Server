@@ -25,6 +25,7 @@ namespace serv
     public:
         void start();
         void stop();
+        void set_script_folder(const std::string& script_folder);
 
     private:
         void accept();
@@ -33,6 +34,7 @@ namespace serv
         tcp::acceptor acceptor_;
         tcp::socket socket_;
         bool started_;
+        std::string script_folder_;
     };
 
 } // namespace serv

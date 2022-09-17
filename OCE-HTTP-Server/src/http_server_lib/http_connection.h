@@ -14,7 +14,9 @@ namespace serv_helpers
         using response_t = http::response<http::string_body>;
 
     public:
-        explicit http_connection(tcp::socket socket);
+        explicit http_connection(
+            tcp::socket socket,
+            const std::string& script_folder);
         ~http_connection() = default;
 
         void start();
@@ -31,6 +33,7 @@ namespace serv_helpers
         net::steady_timer dedline_;
         request_t request_;
         response_t response_;
+        std::string script_folder_;
     };
 
 } // namespace serv_helpers

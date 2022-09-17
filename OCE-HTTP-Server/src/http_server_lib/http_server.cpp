@@ -29,6 +29,11 @@ namespace serv
         started_ = false;
     }
 
+    void http_server::set_script_folder(const std::string& script_folder)
+    {
+        script_folder_ = script_folder;
+    }
+
     void http_server::accept()
     {
         auto accept_cb = [this](beast::error_code ec)
@@ -39,7 +44,8 @@ namespace serv
                     return;
 
                 auto connection = std::make_shared<serv_helpers::http_connection>(
-                    std::move(socket_));
+                    std::move(socket_),
+                    script_folder_);
 
                 connection->start();
             }

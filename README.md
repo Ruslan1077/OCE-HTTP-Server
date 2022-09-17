@@ -1,7 +1,7 @@
 # OCE-HTTP-Server
 ##### Basic information
 - http server for running Lua scripts
-- version: 0.0.8 (alpha test)
+- version: 0.1.10 (beta test)
 
 ##### Used libraries
 - boost (server implementation)
@@ -17,13 +17,19 @@ Once all dependencies have been downloaded, the project is built. The compiled s
 ...\OCE-HTTP-Server\OCE-HTTP-Server\bin\ [platform] \Release<br>
 [platform] - means x64 or Win32.
 
+##### Pre-compiled server
+You can use pre-compiled server that placed in
+- Win_http_compiled\x64\ - for x64
+- Win_http_compiled\x32\ - for Win32
+> NOTE: pdb folder contains all .pdb files for debugging
+
 ##### How to configure & run
 Config example
 ```json
 {
   "server_ip": "127.0.0.1",
   "server_port": 80,
-  "script_folder": "server_scripts\lua"
+  "script_folder": "server_scripts\\"
 }
 ```
 To configure the server, just edit config.json in the root folder of the server. The following parameters are required to run the server:
@@ -33,3 +39,14 @@ To configure the server, just edit config.json in the root folder of the server.
 > NOTE: For now the configuration file has to be added manually. In future versions, if the configuration file is missing, it will be generated automatically with default settings.
 
 After configuring the server run .exe file
+
+##### Before release 1.2.x we need to finish
+- [x] Add POST request processing
+- [x] Add documentation/diagrams etc.
+- [x] Add configuration option for scripts folder
+- [ ] Add unsecure endpoint host/exec/
+- [ ] Add default config generation
+- [ ] Refactor code
+
+##### Future plans on release 1.3.x
+- [ ] Add server command line
