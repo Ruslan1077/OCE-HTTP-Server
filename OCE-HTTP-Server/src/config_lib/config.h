@@ -2,14 +2,34 @@
 #include "pch.h"
 
 #include <string>
+#include <sstream>
 #include <fstream>
+#include <vector>
 #include <nlohmann/json.hpp>
-#include <boost/lexical_cast.hpp>
 
 namespace
 {
     using json_t = nlohmann::json;
 
+    bool custom_config_exist(const std::string& path)
+    {
+        std::ifstream config_file(path);
+        return config_file.good();
+    }
+
+    void create_default_config(const std::string& path)
+    {
+        std::string default_config = "{ \"server_ip\": \"127.0.0.1\", \"server_port\": 80, \"script_folder\": \"\" }";
+        std::ofstream file(path);
+        
+        if (!file.is_open())
+        {
+            throw std::exception("Can't create default config.");
+        }
+
+        file << default_config;
+        file.close();
+    }
 
     json_t get_json(const std::string& path)
     {
@@ -55,6 +75,11 @@ namespace config
     public:
         storage(const std::string& path)
         {
+            if (!custom_config_exist(path))
+            {
+                create_default_config(path);
+            }
+
             json_config_ = get_json(path);
         }
 

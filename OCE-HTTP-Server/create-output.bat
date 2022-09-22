@@ -15,6 +15,7 @@ mkdir %out_dir_x64%\pdb
 
 rem create output with server
 copy %win_64%\http_server.exe %out_dir_x64%\OCE-HTTP-Server.exe /y
+copy %win_64%\lua.dll %out_dir_x64%\lua.dll /y
 
 rem create output with pdbs
 copy %win_64%\config_lib.pdb %out_dir_x64%\pdb\config_lib.pdb /y
@@ -31,6 +32,7 @@ mkdir %out_dir_x32%\pdb
 
 rem create output with server
 copy %win_32%\http_server.exe %out_dir_x32%\OCE-HTTP-Server.exe /y
+copy %win_32%\lua.dll %out_dir_x32%\lua.dll /y
 
 rem create output with pdbs
 copy %win_32%\config_lib.pdb %out_dir_x32%\pdb\config_lib.pdb /y

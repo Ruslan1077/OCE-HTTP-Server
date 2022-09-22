@@ -29,24 +29,26 @@ Config example
 {
   "server_ip": "127.0.0.1",
   "server_port": 80,
-  "script_folder": "server_scripts\\"
+  "script_folder": ""
 }
 ```
 To configure the server, just edit config.json in the root folder of the server. The following parameters are required to run the server:
 - server_ip -> static ip of the server machine (if you run it on remote machine) or 127.0.0.1 (if you run it on local machine).
 - server_port -> I use 80.
 - script_folder -> the folder with the server scripts to run.
-> NOTE: For now the configuration file has to be added manually. In future versions, if the configuration file is missing, it will be generated automatically with default settings.
+> NOTE: if the configuration file is missing, it will be generated automatically with default settings (config example).
 
-After configuring the server run .exe file
+##### How to use
+`Coming soon`
 
 ##### Before release 1.2.x we need to finish
-- [x] Add POST request processing
+- [x] Add POST request processing.
 - [x] Add documentation/diagrams etc.
-- [x] Add configuration option for scripts folder
-- [ ] Add unsecure endpoint host/exec/
-- [ ] Add default config generation
-- [ ] Refactor code
+- [x] Add configuration option for scripts folder.
+- [x] Add default config generation.
+- [ ] Add "How to use" section in documentation.
+- [ ] Add unsecure endpoint host/exec/.
+- [ ] Refactor code.
 
 ##### Future plans on release 1.3.x
-- [ ] Add server command line
+- [ ] Add server command line.

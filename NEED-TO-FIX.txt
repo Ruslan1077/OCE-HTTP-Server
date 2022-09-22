@@ -1,3 +1,0 @@
-TO DO
-- if config empty/ no config => use default params
-- add endpoint to direct execution
